@@ -1,11 +1,15 @@
 import java.util.Arrays;
 
-public class MyArrayList {
-    private Object[] array = {};
+public class MyArrayList<E> {
+    private Object[] array = new Object[10];
 
     public void add(Object value) {
-        array = Arrays.copyOf(array, array.length + 1);
-        array[array.length - 1] = value;
+        int namber = 0;
+        array[namber] = value;
+        namber++;
+        if (namber == array.length) {
+            array = Arrays.copyOf(array, array.length + array.length/2);
+        }
     }
 
     public Object[] getArray() {
