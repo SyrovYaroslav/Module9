@@ -1,14 +1,8 @@
-import java.util.LinkedList;
-
 public class MyLinkedList<E> {
     private Node<E> firstNode;
     private Node<E> lastNode;
     private int size = 0;
 
-    public MyLinkedList(){
-        lastNode = new Node<>(null, firstNode, null);
-        firstNode = new Node<>(null, null, lastNode);
-    }
 
     public void add(E value) {
         final Node<E> l = lastNode;
@@ -22,17 +16,25 @@ public class MyLinkedList<E> {
     }
 
     public void remove(int index) {
-        Node<E> result = firstNode.nextElement;
-        for (int i = 0; i < index; i++) {
-            result = result.nextElement;
+        Node<E> x = firstNode;
+        for (int i = 0; i < index; i++)
+            x = x.nextElement;
+
+        final Node<E> nextElement = x.nextElement;
+        final Node<E> prevElement = x.prevElement;
+        if (prevElement == null) {
+            firstNode = nextElement;
+        } else {
+            prevElement.nextElement = nextElement;
+            x.prevElement = null;
         }
-        final Node<E> nextElement = result.nextElement;
-        final Node<E> prevElement = result.prevElement;
-        prevElement.nextElement = nextElement;
-        result.prevElement = null;
-        nextElement.prevElement = prevElement;
-        result.nextElement = null;
-        result.element = null;
+        if (nextElement == null) {
+            lastNode = prevElement;
+        } else {
+            nextElement.prevElement = prevElement;
+            x.nextElement = null;
+        }
+        x.element = null;
         size--;
     }
 
@@ -53,17 +55,10 @@ public class MyLinkedList<E> {
     }
 
     public E get(int index) {
-        if (index < (size >> 1)) {
-            Node<E> x = firstNode;
-            for (int i = 0; i < index; i++)
-                x = x.nextElement;
-            return x.element;
-        } else {
-            Node<E> x = lastNode;
-            for (int i = size - 1; i > index; i--)
-                x = x.prevElement;
-            return x.element;
-        }
+        Node<E> x = firstNode;
+        for (int i = 0; i < index; i++)
+            x = x.nextElement;
+        return x.element;
     }
 
     private static class Node<E> {
