@@ -1,7 +1,8 @@
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MyHashMap<K, V>   {
-    private Node<K, V>[] table;
+    private Node<K, V>[] table = (Node<K,V>[])new Node[10];
     private int size;
 
     static class Node<K,V>{
@@ -42,10 +43,10 @@ public class MyHashMap<K, V>   {
         }
     }
 
-    public void put(Object key, Object value) {
-
-
-
+    public void put(K key, V value) {
+        int hash = key.hashCode();
+        int i = hash % table.length;
+        table[i] = new Node<K, V>(hash , key, value, null);
     }
 
 }
