@@ -5,13 +5,14 @@ public class MyLinkedList<E> {
 
 
     public void add(E value) {
-        final Node<E> l = lastNode;
-        final Node<E> newNode = new Node<>(value, l, null);
+        Node<E> l = lastNode;
+        Node<E> newNode = new Node<>(value, l, null);
         lastNode = newNode;
-        if (l == null)
+        if (l == null) {
             firstNode = newNode;
-        else
+        } else {
             l.nextElement = newNode;
+        }
         size++;
     }
 
@@ -20,8 +21,8 @@ public class MyLinkedList<E> {
         for (int i = 0; i < index; i++)
             x = x.nextElement;
 
-        final Node<E> nextElement = x.nextElement;
-        final Node<E> prevElement = x.prevElement;
+        Node<E> nextElement = x.nextElement;
+        Node<E> prevElement = x.prevElement;
         if (prevElement == null) {
             firstNode = nextElement;
         } else {
