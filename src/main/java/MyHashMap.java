@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class MyHashMap<K, V>   {
@@ -8,8 +7,8 @@ public class MyHashMap<K, V>   {
     private int size;
 
     static class Node<K,V>{
-        final int hash;
-        final K key;
+        int hash;
+        K key;
         V value;
 
         public Node<K, V> getNext() {
@@ -59,6 +58,7 @@ public class MyHashMap<K, V>   {
     }
 
     public void put(K key, V value) {
+        Node<K, V> newNode = new Node<K, V>(hashCode() , key, value, null);
         boolean myArr = false;
         int amount = 0;
         //увеличит масив если все хеш єлементы заполнены
@@ -71,30 +71,32 @@ public class MyHashMap<K, V>   {
             table = Arrays.copyOf(table, table.length * 3/2);
         }
         //проверка на похожеие ключи
-        for (Node<K, V> element : table) {
-            if (element != null) {
-                if (element.getKey().equals(key)) {
-                    element.setValue(value);
+//        for (Node<K, V> element : table) {
+//            if (element != null) {
+//                if (element.getKey().equals(key)) {
+//                    element.setValue(value);
+//                }
+//            }
+//        }
+        // добавление элементов в масив
+        if (table[index(key)] == null) {
+            table[index(key)] = newNode;
+        } else {
+            while (table[index(key)].next == null) {
+                if (table[index(key)].getKey().equals(key)) {
+                    table[index(key)].setValue(value);
+                }
+                if (table[index(key)].next == null) {
+                    table[index(key)].next = newNode;
                 }
             }
         }
-        // добавление элементов в масив
-        if (table[index(key)] == null) {
-            table[index(key)] = new Node<K, V>(hashCode() , key, value, null);
-        } else {
-            Node<K, V> temp = new Node<K, V>(hashCode() , key, value, null);
-            table[index(key)].setNext(temp);
-            table[index(key)] = temp;
-        }
-        size++;
 
+        size++;
     }
 
     public int size(){
-        System.out.println(size);
         return size;
     }
-
-
 
 }
