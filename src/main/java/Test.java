@@ -9,6 +9,8 @@ public class Test {
         a.put(1, "1");
         a.put(2, "2");
         a.put(3, "3");
+        a.put(3, "4");
+
         a.size();
     }
 

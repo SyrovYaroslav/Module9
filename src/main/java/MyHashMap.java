@@ -40,12 +40,8 @@ public class MyHashMap<K, V>   {
         }
 
         public final boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return  false;
-            }
+            if (o == this) {return true;}
+            if (o == null || getClass() != o.getClass()) {return  false;}
             Node<K, V> node = (Node<K, V>) o;
             return Objects.equals(key, node.getKey()) &&
                     Objects.equals(value, node.getValue());
@@ -59,9 +55,9 @@ public class MyHashMap<K, V>   {
 
     public void put(K key, V value) {
         Node<K, V> newNode = new Node<K, V>(hashCode() , key, value, null);
-        boolean myArr = false;
         int amount = 0;
-        //увеличит масив если все хеш єлементы заполнены
+        boolean colision = false;
+
         for (Node<K, V> element : table) {
             if (element != null) {
                 amount++;
@@ -70,27 +66,25 @@ public class MyHashMap<K, V>   {
         if (amount == table.length) {
             table = Arrays.copyOf(table, table.length * 3/2);
         }
-        //проверка на похожеие ключи
-//        for (Node<K, V> element : table) {
-//            if (element != null) {
-//                if (element.getKey().equals(key)) {
-//                    element.setValue(value);
-//                }
-//            }
-//        }
-        // добавление элементов в масив
+
         if (table[index(key)] == null) {
             table[index(key)] = newNode;
         } else {
-            while (table[index(key)].next == null) {
+            while (table[index(key)].getNext() != null) {
                 if (table[index(key)].getKey().equals(key)) {
                     table[index(key)].setValue(value);
+                    colision = true;
+                    break;
                 }
-                if (table[index(key)].next == null) {
-                    table[index(key)].next = newNode;
-                }
+                table[index(key)] = table[index(key)].getNext();
+            }
+            if (!colision) {
+                table[index(key)].next = newNode;
             }
         }
+        System.out.println(table[index(key)].getKey());
+        System.out.println(table[index(key)].getValue());
+
 
         size++;
     }
