@@ -55,22 +55,28 @@ public class MyHashMap<K, V>   {
 
     public void put(K key, V value) {
         Node<K, V> newNode = new Node<K, V>(hashCode() , key, value, null);
+        Node<K, V> lastNode = null;
         int amount = 0;
         boolean colision = false;
 
-        for (Node<K, V> element : table) {
-            if (element != null) {
-                amount++;
-            }
-        }
-        if (amount == table.length) {
-            table = Arrays.copyOf(table, table.length * 3/2);
-        }
+//        for (Node<K, V> element : table) {
+//            if (element != null) {
+//                amount++;
+//            }
+//        }
+//        if (amount == table.length) {
+//            table = Arrays.copyOf(table, table.length * 3/2);
+//        }
 
         if (table[index(key)] == null) {
             table[index(key)] = newNode;
         } else {
-            while (table[index(key)].getNext() != null) {
+            if (table[index(key)].getNext() == null) {
+                if (table[index(key)].getKey().equals(key)) {
+                    table[index(key)].setValue(value);
+                }
+            }
+            while (table[index(key)].getNext() != null )  {
                 if (table[index(key)].getKey().equals(key)) {
                     table[index(key)].setValue(value);
                     colision = true;
@@ -78,13 +84,14 @@ public class MyHashMap<K, V>   {
                 }
                 table[index(key)] = table[index(key)].getNext();
             }
-            if (!colision) {
+            if (!colision && table[index(key)].getNext() == null ) {
                 table[index(key)].next = newNode;
             }
         }
+        System.out.println(Arrays.toString(table));
         System.out.println(table[index(key)].getKey());
         System.out.println(table[index(key)].getValue());
-
+        System.out.println(table[index(key)].getNext());
 
         size++;
     }
