@@ -59,43 +59,108 @@ public class MyHashMap<K, V>   {
         Node<K, V> x = table[index(key)];
         boolean colision = false;
 
-//        for (Node<K, V> element : table) {
-//            if (element != null) {
-//                amount++;
-//            }
-//        }
-//        if (amount == table.length) {
-//            table = Arrays.copyOf(table, table.length * 3/2);
-//        }
+        for (Node<K, V> element : table) {
+            if (element != null) {
+                amount++;
+            }
+        }
+
+        if (amount == table.length) {
+            table = Arrays.copyOf(table, table.length * 3/2);
+        }
 
         if (x == null) {
             table[index(key)] = newNode;
+            size ++;
         } else {
             if (x.getNext() == null) {
                 if (x.getKey().equals(key)) {
                     x.setValue(value);
+                    colision = true;
                 }
             }
             while (x.getNext() != null )  {
+                Node<K, V> next = x.getNext();
+                x = next;
                 if (x.getKey().equals(key)) {
                     x.setValue(value);
                     colision = true;
                     break;
                 }
-                Node<K, V> next = x.getNext();
-                x = next;
             }
-            x.next = newNode;
-            if (!colision && x.getNext() == null ) {
+            if (!colision) {
                 x.next = newNode;
+                size++;
             }
         }
 
-        size++;
+
     }
 
     public int size(){
         return size;
     }
 
+    public void remove(K key) {
+        Node<K, V> x = table[index(key)];
+        if (x.getNext() == null) {
+            if (x.getKey().equals(key)) {
+                table[index(key)] = null;
+            }
+            size--;
+        } else {
+            while (x.getNext() != null) {
+                Node<K, V> next = x.getNext();
+                if (x.getKey().equals(key)) {
+                    x.next = next.next;
+                    x.hash = next.hash;
+                    x.key = next.key;
+                    x.value = next.value;
+                    size--;
+                    break;
+                }
+                x = next;
+            }
+        }
+    }
+
+    public Object get(K key) {
+        Node<K, V> x = table[index(key)];
+        Object result = null;
+        if (x.getNext() == null) {
+            if (x.getKey().equals(key)) {
+                result = x.getValue();
+            }
+        } else {
+            while (x.getNext() != null) {
+                Node<K, V> next = x.getNext();
+                x = next;
+                if (x.getKey().equals(key)) {
+                    result = x.getValue();
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void clear() {
+        for (int i = 0;i < table.length;i++) {
+            while (table[i] != null) {
+                if (table[i].getNext() == null) {
+                    table[i] = null;
+                } else {
+                    while (table[i].getNext() != null) {
+                        Node<K, V> next = table[i].getNext();
+                        table[i].next = next.next;
+                        table[i].hash = next.hash;
+                        table[i].key = next.key;
+                        table[i].value = next.value;
+                        table[i] = next;
+                    }
+                }
+            }
+        }
+        size = 0;
+    }
 }
