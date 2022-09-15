@@ -10,13 +10,11 @@ public class MyStack<E> {
         }
         array[size] = value;
         size++;
-        System.out.println(Arrays.toString(array));
     }
 
     public void remove(int index) {
         System.arraycopy(array, index + 1, array, index, size - 1 - index);
         array[size = size - 1] = null;
-        System.out.println(Arrays.toString(array));
     }
 
     public void clear() {
@@ -28,8 +26,8 @@ public class MyStack<E> {
         size = 0;
     }
 
-    public void size() {
-        System.out.println(size);
+    public int size() {
+        return size;
     }
 
     public Object peek() {

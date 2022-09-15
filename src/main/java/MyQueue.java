@@ -26,8 +26,8 @@ public class MyQueue<E> {
         size = 0;
     }
 
-    public void size() {
-        System.out.println(size);
+    public int size() {
+        return size;
     }
 
     public Object peek() {

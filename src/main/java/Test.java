@@ -10,6 +10,7 @@ public class Test {
         a.remove(1);
         a.put(12, "[eq");
         System.out.println(a.get(11));
+        System.out.println(a.get(3));
         a.clear();
         System.out.println(a.size());
     }

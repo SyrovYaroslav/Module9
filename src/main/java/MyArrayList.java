@@ -26,8 +26,8 @@ public class MyArrayList<E> {
         number = 0;
     }
 
-    public void size() {
-        System.out.println(number);
+    public int size() {
+        return number;
     }
 
 
