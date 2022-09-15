@@ -106,8 +106,8 @@ public class MyHashMap<K, V>   {
         if (entry.getNext() == null) {
             if (entry.getKey().equals(key)) {
                 table[index(key)] = null;
+                size--;
             }
-            size--;
         } else {
             while (entry.getNext() != null) {
                 Node<K, V> next = entry.getNext();
@@ -119,12 +119,12 @@ public class MyHashMap<K, V>   {
                         entry.hash = next.hash;
                         entry.key = next.key;
                         entry.value = next.value;
-                        size--;
                         break;
                     }
                 }
                 entry = next;
             }
+            size--;
         }
     }
 
