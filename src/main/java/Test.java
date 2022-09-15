@@ -7,7 +7,7 @@ public class Test {
         a.put(11, "1sdgsgs");
         a.put(12, "[eq");
         a.put(13, "13");
-        a.remove(1);
+        a.remove(11);
         a.put(12, "[eq");
         System.out.println(a.get(11));
         System.out.println(a.get(3));

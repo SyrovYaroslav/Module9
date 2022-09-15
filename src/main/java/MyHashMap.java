@@ -112,12 +112,16 @@ public class MyHashMap<K, V>   {
             while (entry.getNext() != null) {
                 Node<K, V> next = entry.getNext();
                 if (entry.getKey().equals(key)) {
-                    entry.next = next.next;
-                    entry.hash = next.hash;
-                    entry.key = next.key;
-                    entry.value = next.value;
-                    size--;
-                    break;
+                    if (next == null) {
+                        table[index(key)] = null;
+                    } else {
+                        entry.next = next.next;
+                        entry.hash = next.hash;
+                        entry.key = next.key;
+                        entry.value = next.value;
+                        size--;
+                        break;
+                    }
                 }
                 entry = next;
             }
@@ -134,11 +138,11 @@ public class MyHashMap<K, V>   {
         } else {
             while (entry.getNext() != null) {
                 Node<K, V> next = entry.getNext();
-                entry = next;
                 if (entry.getKey().equals(key)) {
                     result = entry.getValue();
                     break;
                 }
+                entry = next;
             }
         }
         return result;
