@@ -109,16 +109,24 @@ public class MyHashMap<K, V>   {
                 size--;
             }
         } else {
-            while (entry.getNext() != null) {
+            Node<K, V> prev = entry;
+            while (entry != null) {
                 Node<K, V> next = entry.getNext();
+
                 if (entry.getKey().equals(key)) {
-                    entry.next = next.next;
-                    entry.hash = next.hash;
-                    entry.key = next.key;
-                    entry.value = next.value;
+                    if (entry.getNext() != null) {
+                        entry.next = next.next;
+                        entry.hash = next.hash;
+                        entry.key = next.key;
+                        entry.value = next.value;
+                    } else {
+                        prev.next = null;
+                    }
+
                     size--;
                     break;
                 }
+                prev = entry;
                 entry = next;
 
             }
@@ -127,41 +135,25 @@ public class MyHashMap<K, V>   {
 
     public Object get(K key) {
         Node<K, V> entry = table[index(key)];
-        Object result = null;
-        if (entry.getNext() == null) {
+        if (entry != null && entry.getNext() == null) {
             if (entry.getKey().equals(key)) {
-                result = entry.getValue();
+                return entry.getValue();
             }
         } else {
-            while (entry.getNext() != null) {
+            while (entry != null && entry.getNext() != null) {
                 Node<K, V> next = entry.getNext();
-                entry = next;
                 if (entry.getKey().equals(key)) {
-                    result = entry.getValue();
-                    break;
+                    return entry.getValue();
                 }
+                entry = next;
             }
         }
-        return result;
+        return null;
     }
 
     public void clear() {
-        for (int i = 0;i < table.length;i++) {
-            while (table[i] != null) {
-                if (table[i].getNext() == null) {
-                    table[i] = null;
-                } else {
-                    while (table[i].getNext() != null) {
-                        Node<K, V> next = table[i].getNext();
-                        table[i].next = next.next;
-                        table[i].hash = next.hash;
-                        table[i].key = next.key;
-                        table[i].value = next.value;
-                        table[i] = next;
-                    }
-                }
-            }
-        }
+        Arrays.fill(table, null);
         size = 0;
     }
+
 }

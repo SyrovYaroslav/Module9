@@ -18,11 +18,7 @@ public class MyStack<E> {
     }
 
     public void clear() {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                array[i] = null;
-            }
-        }
+        Arrays.fill(array, null);
         size = 0;
     }
 
